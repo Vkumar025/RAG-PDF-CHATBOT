@@ -561,11 +561,11 @@ Optimized for low-end laptops with 8GB RAM.
 
 # 👩‍💻 Author
 
-## Vanshika Devi
+## Vivek Kumar
 
 GitHub:
 
-👉 https://github.com/Vanshika-devi
+👉 https://github.com/Vkumar025
 
 ---
 
