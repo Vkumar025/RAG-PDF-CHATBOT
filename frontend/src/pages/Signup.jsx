@@ -20,31 +20,33 @@ function Signup({
     useState("");
 
   const handleSignup = async () => {
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      toast.error("Please enter a valid email address (e.g. user@example.com)");
+      return;
+    }
 
     try {
-
       await signupUser({
-
-        name,
-        email,
+        name: name.trim(),
+        email: email.trim(),
         password
-
       });
 
-      toast.success(
-        "Account Created Successfully"
-      );
-
+      toast.success("Account Created Successfully");
       goToLogin();
-
     } catch (error) {
-
-      toast.error(
-
-        error.response?.data?.detail ||
-
-        "Signup Failed"
-      );
+      const detail = error.response?.data?.detail;
+      const errorMsg = Array.isArray(detail)
+        ? detail.map((d) => d.msg).join(", ")
+        : typeof detail === "string"
+        ? detail
+        : "Signup Failed";
+      toast.error(errorMsg);
     }
   };
 

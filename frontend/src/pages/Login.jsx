@@ -18,38 +18,33 @@ function Login({
     useState("");
 
   const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      toast.error("Please enter both email and password");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      toast.error("Please enter a valid email address (e.g. user@example.com)");
+      return;
+    }
 
     try {
+      const response = await loginUser({
+        email: email.trim(),
+        password
+      });
 
-      const response =
-        await loginUser({
-
-          email,
-          password
-
-        });
-
-      localStorage.setItem(
-        "token",
-        response.data.token
-      );
-
-      toast.success(
-        "Login Successful"
-      );
-
-      onLoginSuccess(
-        response.data.token
-      );
-
+      localStorage.setItem("token", response.data.token);
+      toast.success("Login Successful");
+      onLoginSuccess(response.data.token);
     } catch (error) {
-
-      toast.error(
-
-        error.response?.data?.detail ||
-
-        "Login Failed"
-      );
+      const detail = error.response?.data?.detail;
+      const errorMsg = Array.isArray(detail)
+        ? detail.map((d) => d.msg).join(", ")
+        : typeof detail === "string"
+        ? detail
+        : "Login Failed";
+      toast.error(errorMsg);
     }
   };
 
